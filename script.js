@@ -1,13 +1,12 @@
 let isRunning = false;
-let startTime = 0;
 let elapsedTime = 0;
 let interval;
 let lapTimes = [];
 
 const timeDisplay = document.getElementById('timeDisplay');
 const startStopButton = document.getElementById('startStop');
-const lapButton = document.getElementById('lap');
 const resetButton = document.getElementById('reset');
+const lapButton = document.getElementById('lap');
 const lapList = document.getElementById('lapList');
 
 function formatTime(time) {
@@ -18,7 +17,7 @@ function formatTime(time) {
 }
 
 function updateTime() {
-  elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+  elapsedTime++;
   timeDisplay.textContent = formatTime(elapsedTime);
 }
 
@@ -27,7 +26,6 @@ function startStop() {
     clearInterval(interval);
     startStopButton.textContent = 'Start';
   } else {
-    startTime = Date.now() - elapsedTime * 1000;
     interval = setInterval(updateTime, 1000);
     startStopButton.textContent = 'Stop';
   }
@@ -38,10 +36,10 @@ function reset() {
   clearInterval(interval);
   isRunning = false;
   elapsedTime = 0;
+  lapTimes = [];
   timeDisplay.textContent = formatTime(elapsedTime);
   startStopButton.textContent = 'Start';
-  lapTimes = [];
-  lapList.innerHTML = '';
+  lapList.innerHTML = ''; // Clear the lap list
 }
 
 function recordLap() {
@@ -50,7 +48,6 @@ function recordLap() {
     lapTimes.push(lapTime);
 
     const lapItem = document.createElement('div');
-    lapItem.classList.add('lap-item');
     lapItem.textContent = `Lap ${lapTimes.length}: ${lapTime}`;
     
     lapList.appendChild(lapItem);
